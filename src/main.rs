@@ -8,5 +8,5 @@ fn main() {
         .read_line(&mut guess)
         .expect("Failed to read line");
 
-    println!("You guessed: {guess}");
+    print!("You guessed: {guess}");
 }
