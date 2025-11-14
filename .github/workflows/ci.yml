@@ -1,0 +1,45 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout code
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    # 2. Install the Rust toolchain
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    # 3. Cache dependencies (makes pipeline faster)
+    - name: Cache cargo registry
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    # 4. cargo check
+    - name: Cargo check
+      run: cargo check
+
+    # 5. cargo fmt --check
+    - name: Check formatting
+      run: cargo fmt --all --check
+
+    # 6. cargo clippy
+    - name: Run Clippy
+      run: cargo clippy -- -D warnings
+
+    # 7. cargo test
+    - name: Run tests
+      run: cargo test

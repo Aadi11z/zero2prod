@@ -1,12 +1,6 @@
-use std::io;
+use zero2prod::run;
 
-fn main() {
-    println!("Guess the number!");
-    println!("Please input your guess");
-    let mut guess = String::new();
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
-
-    println!("You guessed: {guess}");
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
+    run()?.await
 }
