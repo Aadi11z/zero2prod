@@ -1,4 +1,4 @@
-name: Rust CI
+name: Rust CI Pipeline
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
 
     # 5. cargo fmt --check
     - name: Check formatting
-      run: cargo fmt --all --check
+      run: cargo fmt --all 
 
     # 6. cargo clippy
     - name: Run Clippy

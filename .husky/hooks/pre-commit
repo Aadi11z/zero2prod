@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "Running pre-commit hook"
+
+echo "Formatting code..."
+cargo fmt --all
+
+echo "Running Clippy..."
+cargo clippy -- -D warnings
+
+echo "Running tests..."
+cargo test
+

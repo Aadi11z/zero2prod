@@ -291,6 +291,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "cargo-husky"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b02b629252fe8ef6460461409564e2c21d0c8e77e0944f3d189ff06c4e932ad"
+
+[[package]]
 name = "cc"
 version = "1.2.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -616,6 +622,12 @@ name = "httpdate"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
+
+[[package]]
+name = "husky-rs"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8595e3e777338ccc8360c4eb89924f8d7e55a5ff831d057e1c65892c220da28f"
 
 [[package]]
 name = "hyper"
@@ -1988,6 +2000,8 @@ name = "zero2prod"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "cargo-husky",
+ "husky-rs",
  "reqwest",
  "tokio",
 ]
