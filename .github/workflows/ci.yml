@@ -34,7 +34,7 @@ jobs:
 
     # 5. cargo fmt --check
     - name: Check formatting
-      run: cargo fmt --all 
+      run: cargo fmt --check
 
     # 6. cargo clippy
     - name: Run Clippy
