@@ -59,6 +59,9 @@ Each iteration should take a fixed amount of time and gives us a slightly better
 Code at the end of every iteration needs to be production-quality
 
 ## Chapter 3: Sign Up a New Subscriber
+This chapter a lot of details such as building the first endpoint, setting up tests, connecting to Postgres database, using sqlx, CI pipelining, etc...
+This chapter was overwhelming for me as well when I went through it the first time, but hopefully repetition will smooth things over.
+
 Building the use-case of the a Blog Visitor.
 
 BLOG VISITOR -> inputs email address on web page -> triggers an api call to -> BACKEND SERVER -> processes information, stores it, sends back a response
@@ -67,9 +70,5 @@ This chapter focuses on the backend server - /subsciptions POST endpoint
 
 **Strategy**
 - Framework Chosen - actix-web (others: rocket, tide, warp). Other choices available are:- rocket, tide, warp. Read this [!link](https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/) by the author for more info.
-
-
-
-
-
+- Testing Strateg
 
