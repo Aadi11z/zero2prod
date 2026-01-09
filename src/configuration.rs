@@ -18,7 +18,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let config = config::Config::builder()
         .add_source(config::File::with_name("configuration"))
         .build()?;
-    
+
     config.try_deserialize()
 }
 

@@ -21,7 +21,7 @@ serde = "1.0.228"
 config = "0.15.19"
 uuid = { version = "1", features = ["serde", "v4"] }
 chrono = "0.4.15"
-env_logger = "0.9"
+env_logger = "0.11.8"
 log = "0.4"
 
 [dependencies.sqlx]
