@@ -69,6 +69,22 @@ BLOG VISITOR -> inputs email address on web page -> triggers an api call to -> B
 This chapter focuses on the backend server - /subsciptions POST endpoint
 
 **Strategy**
-- Framework Chosen - actix-web (others: rocket, tide, warp). Other choices available are:- rocket, tide, warp. Read this [!link](https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/) by the author for more info.
-- Testing Strateg
+- Framework Chosen - actix-web (others: rocket, tide, warp). Other choices available are:- rocket, tide, warp. Read this [article](https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/) by the author for more info on the comparison between the different types of frameworks.
+
+- Testing Strategy - There methods of testing available: Embedded test Module, External 'tests' folder or Public documentation (doc tests). 
+
+In Embedded Test module, the test is hidden behind a configuration conditional check, '''rust #[cfg(test)] '''. Two operators in Rust that help do configuration conditional check: '''rust cfg ''' attribute and '''rust cfg! ''' macro. '''rust cfg ''' attribute will help with conditional compilation checks while '''rust cfg! ''' macro helps with checks at run-time which evaluate to either '''rust true ''' or '''rust false '''. See [link](https://doc.rust-lang.org/stable/rust-by-example/attribute/cfg.html) for example. This method is good for iceberg projects (projects which are significant in size but the currently exposed functionality is limited, so you can write tests for sub-components to evalue for correctness)
+
+In External Folder and doc testing, it simulates testing code in the same way a user would (Integration Testing). 
+
+We use Integration Testing and make a '''rust tests''' folder to store our tests. 
+
+For better understanding, i would recommend reading up on Conditional Compilation or cfg (configuration flag), which is a powerful attribute for conditional compilation, letting you include or exclude code blocks, functions, or modules based on compile-time conditions like target OS, features, or custom flags, preventing dead code and enabling platform-specific logic. It works with cfg!() macro for runtime checks, enabling features like '''rust #[cfg(test)]''' for tests or '''rust #[cfg(unix)]''' for OS-specific code, essential for building portable and optimized applications. Also you might want to read upon [Testing](https://doc.rust-lang.org/reference/attributes/testing.html) and [attributes](https://doc.rust-lang.org/reference/attributes.html)
+
+- crate to interact with database -
+- migrations
+- queries
+
+**First Endpoint**
+
 

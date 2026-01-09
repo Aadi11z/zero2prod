@@ -1,3 +1,4 @@
+//! src/configuration.rs
 #[derive(serde::Deserialize)]
 pub struct Settings {
     pub database: DatabaseSettings,
@@ -14,11 +15,11 @@ pub struct DatabaseSettings {
 }
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
-    let mut settings = config::Config::default();
-    // load the `configuration.yaml` file in the project root
-    settings.merge(config::File::with_name("configuration"))?;
-
-    settings.try_into()
+    let config = config::Config::builder()
+        .add_source(config::File::with_name("configuration"))
+        .build()?;
+    
+    config.try_deserialize()
 }
 
 impl DatabaseSettings {
@@ -35,5 +36,4 @@ impl DatabaseSettings {
             self.username, self.password, self.host, self.port
         )
     }
-
 }
