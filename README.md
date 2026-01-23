@@ -1,90 +1,325 @@
-# Notes by Aaditya Bhatnagar
-## Book: Zero to Production in Rust by Luca Palmieri
-These notes will contain anything and everything that I have learnt from this book and deem useful to know. Some of the simple steps or things I already know might not be present in these notes, So i would suggest you refer the book if you happen to get stuck and find yourself in a knowledge gap. 
+# Notes by Aaditya Bhatnagar  
+## *Zero to Production in Rust* — Luca Palmieri
 
-## Chapter 1: Getting Started
-This book will help you get strated with rust setup and git setup for the project but there's no need for notes on that as the steps are pretty straightforward so I wont be including that in my notes. I will be including most and also adding some extra things I have researched to understand better on my journey to the completion of this book.
+These notes document my learnings while working through **Zero to Production in Rust** by Luca Palmieri.
 
-**Useful Crates/Commands**
-- cargo watch {(MAC) I used brew install cargo-watch cause the book route (cargo install cargo-watch) was giving me macOS ARM64 linker error}
-- cargo check 
-- cargo run
-- cargo test
-- cargo tarpaulin
-- cargo clippy
-- cargo fmt
-- cargo audit
+They include:
+- key concepts explained in my own words  
+- practical commands, tools, and workflows  
+- additional context I researched to fill knowledge gaps  
 
+⚠️ Some basic steps (Rust install, Git setup, etc.) are intentionally omitted.  
+If you feel stuck, **refer back to the book** — these notes are a companion, not a replacement.
 
-**Inner Development Loop (IDL)**
-- A Change
-- Compile the app
-- Run Tests
-- Run the app
+---
 
-* Speed of the inner development loop is an upper bound on the number of iterations that you can complete in a unit of time
-* This is important because if it takes 5 minutes to run one iteration of an IDL then, you can do at most 12 IDL in an hour. Even though this is a Rust book and Rust is popular for its speed, it cant help us here because compilation time is a pain point on big projects. So "reduce compilation time". 
+## Chapter 1 — Getting Started
 
-**Continuous Integration Pipeline (CI)**
-- CI is a system whose job is to constantly check, test, and ship your code. 
-- It works with every commit, and depending on the piepline you write, it can make sure your code is buildable, correct, and high-quality.
-- It is used to prevent broken code from reaching the main branch. Useful for team projects.
+This chapter focuses on setting up the development environment and tooling.  
+The steps are straightforward, so I won’t repeat them here, but I’ll highlight **useful tools and workflows** introduced early on.
 
-Steps:
-- cargo test (build before running tests)
-- cargo tarpaulin --ignore-tests (code coverage, will collect info and check is some portions of the codebase have been overlooked over time and are poorly tested)
-- cargo clippy -- -D warnings (linter, helps spot unidiomatic code, overly-complex constructs, common mistakes/inefficiencies, If suggested a change that is not desirable thenm mute the warning with 
-'''rust 
-#[allow(clippy::lint_name)]
-''' )
-- cargo fmt -- --check
-- cargo audit (checks if vulnerabilities have been reported for any of the crates in the dependency tree)
+---
 
-You can either choose to build your own CI pipeline or pick up available CI pipelines. I'm listing here the pipeline link for the GitHub Actions pipeline.
-GitHub Actions - ![link](https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3)
+### Useful Crates & Commands
 
-## Chapter 2: Building An Email Newsletter
-The book makes it very clear about the use case they intend to fulfil with the Email Newsletter, i.e., they want to fulfill three user stories:
-- As a Blog Visitor: To be able to subscribe to the newsletter - In order to receive email updates when new content is published on the blog
-- As a Blog Author: To send an email to all my subscribers - In order to notify when new content is published
-- As a subsriber: To be able to unsubscribe from the newsletter - In order to stop receiving email updates
+- `cargo watch`  
+  > *(macOS)* Installed via `brew install cargo-watch`  
+  > `cargo install cargo-watch` caused ARM64 linker errors for me
 
-Future features (not implemented by the book):
-- Manage multiple newsletters
-- Segment subscribers in multiple audiences
-- Track opening and click rates
+- `cargo check`
+- `cargo run`
+- `cargo test`
+- `cargo tarpaulin`
+- `cargo clippy`
+- `cargo fmt`
+- `cargo audit`
 
-**Working in Iterations**
-Each iteration should take a fixed amount of time and gives us a slightly better version of the product, improving the experience of our users.
-Code at the end of every iteration needs to be production-quality
+---
 
-## Chapter 3: Sign Up a New Subscriber
-This chapter a lot of details such as building the first endpoint, setting up tests, connecting to Postgres database, using sqlx, CI pipelining, etc...
-This chapter was overwhelming for me as well when I went through it the first time, but hopefully repetition will smooth things over.
+### Inner Development Loop (IDL)
 
-Building the use-case of the a Blog Visitor.
+The **Inner Development Loop** represents how fast you can iterate while building software.
 
-BLOG VISITOR -> inputs email address on web page -> triggers an api call to -> BACKEND SERVER -> processes information, stores it, sends back a response
+**Typical loop:**
+1. Make a change
+2. Compile the app
+3. Run tests
+4. Run the application
 
-This chapter focuses on the backend server - /subsciptions POST endpoint
+**Key idea:**  
+> The speed of your IDL is an *upper bound* on how many meaningful iterations you can complete per hour.
 
-**Strategy**
-- Framework Chosen - actix-web (others: rocket, tide, warp). Other choices available are:- rocket, tide, warp. Read this [article](https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/) by the author for more info on the comparison between the different types of frameworks.
+Even though Rust produces fast binaries, **compile time becomes a bottleneck** on large projects.  
+Optimizing your workflow to reduce unnecessary recompilation is critical.
 
-- Testing Strategy - There methods of testing available: Embedded test Module, External 'tests' folder or Public documentation (doc tests). 
+---
 
-In Embedded Test module, the test is hidden behind a configuration conditional check, '''rust #[cfg(test)] '''. Two operators in Rust that help do configuration conditional check: '''rust cfg ''' attribute and '''rust cfg! ''' macro. '''rust cfg ''' attribute will help with conditional compilation checks while '''rust cfg! ''' macro helps with checks at run-time which evaluate to either '''rust true ''' or '''rust false '''. See [link](https://doc.rust-lang.org/stable/rust-by-example/attribute/cfg.html) for example. This method is good for iceberg projects (projects which are significant in size but the currently exposed functionality is limited, so you can write tests for sub-components to evalue for correctness)
+### Continuous Integration (CI)
 
-In External Folder and doc testing, it simulates testing code in the same way a user would (Integration Testing). 
+A **CI pipeline** automatically checks your code on every commit to ensure it is:
+- buildable
+- correct
+- idiomatic
+- secure
 
-We use Integration Testing and make a '''rust tests''' folder to store our tests. 
+This prevents broken or low-quality code from reaching `main`, especially in team projects.
 
-For better understanding, i would recommend reading up on Conditional Compilation or cfg (configuration flag), which is a powerful attribute for conditional compilation, letting you include or exclude code blocks, functions, or modules based on compile-time conditions like target OS, features, or custom flags, preventing dead code and enabling platform-specific logic. It works with cfg!() macro for runtime checks, enabling features like '''rust #[cfg(test)]''' for tests or '''rust #[cfg(unix)]''' for OS-specific code, essential for building portable and optimized applications. Also you might want to read upon [Testing](https://doc.rust-lang.org/reference/attributes/testing.html) and [attributes](https://doc.rust-lang.org/reference/attributes.html)
+#### Typical CI Steps
 
-- crate to interact with database -
-- migrations
-- queries
+1. **Run tests**
+   ```bash
+   cargo test
+````
 
-**First Endpoint**
+2. **Code coverage**
 
+   ```bash
+   cargo tarpaulin --ignore-tests
+   ```
 
+   Helps identify untested or neglected areas of the codebase.
+
+3. **Linting**
+
+   ```bash
+   cargo clippy -- -D warnings
+   ```
+
+   * catches unidiomatic or inefficient code
+   * warnings can be silenced selectively using:
+
+     ```rust
+     #[allow(clippy::lint_name)]
+     ```
+
+4. **Formatting**
+
+   ```bash
+   cargo fmt -- --check
+   ```
+
+5. **Security audit**
+
+   ```bash
+   cargo audit
+   ```
+
+You can build your own pipeline or reuse existing ones.
+
+📌 **GitHub Actions reference pipeline:**
+[https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3](https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3)
+
+---
+
+## Chapter 2 — Building an Email Newsletter
+
+The book clearly defines the **use case** through three core user stories.
+
+### User Stories
+
+* **As a blog visitor**
+  I want to subscribe to the newsletter to receive updates when new content is published.
+
+* **As a blog author**
+  I want to email all subscribers when new content is published.
+
+* **As a subscriber**
+  I want to unsubscribe to stop receiving emails.
+
+### Future Features (Not Implemented)
+
+* Multiple newsletters
+* Subscriber segmentation
+* Open / click tracking
+
+---
+
+### Working in Iterations
+
+* Each iteration has a **fixed timebox**
+* Each iteration produces a **production-quality improvement**
+* No “temporary” code — quality is enforced early
+
+This mirrors real-world backend development.
+
+---
+
+## Chapter 3 — Signing Up a New Subscriber
+
+This chapter introduces:
+
+* the first HTTP endpoint
+* database integration
+* SQLx
+* Docker + Postgres
+* integration testing
+* CI integration
+
+⚠️ This chapter is **intentionally overwhelming** on the first read.
+
+Repetition is expected.
+
+---
+
+### High-Level Flow
+
+```
+Blog Visitor
+    ↓
+Web Form (email + name)
+    ↓
+POST /subscriptions
+    ↓
+Backend Server
+    ↓
+Database (Postgres)
+    ↓
+HTTP Response
+```
+
+This chapter focuses **only on the backend**:
+
+* `/subscriptions` `POST` endpoint
+
+---
+
+### Strategy Decisions
+
+#### Web Framework
+
+* Chosen: **actix-web**
+* Alternatives: Rocket, Tide, Warp
+
+📖 Framework comparison by the author:
+[https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/](https://www.lpalmieri.com/posts/2020-07-04-choosing-a-rust-web-framework-2020-edition/)
+
+---
+
+#### Testing Strategy
+
+Rust supports multiple testing approaches:
+
+1. **Embedded tests**
+
+   ```rust
+   #[cfg(test)]
+   ```
+
+   * hidden behind conditional compilation
+   * good for testing internal components
+   * suitable for “iceberg projects” (large internals, small public API)
+
+2. **Integration tests** *(used in this project)*
+
+   * placed in the `tests/` directory
+   * simulate real user behavior
+   * test the system as a whole
+
+3. **Documentation tests**
+
+We use **integration tests** because they validate real HTTP behavior.
+
+📖 Useful references:
+
+* Conditional compilation (`cfg`):
+  [https://doc.rust-lang.org/stable/rust-by-example/attribute/cfg.html](https://doc.rust-lang.org/stable/rust-by-example/attribute/cfg.html)
+* Testing attributes:
+  [https://doc.rust-lang.org/reference/attributes/testing.html](https://doc.rust-lang.org/reference/attributes/testing.html)
+
+---
+
+### Database Integration
+
+* Database: **Postgres**
+* Crate: **sqlx**
+* Migrations: **sqlx migrations**
+* Queries validated at compile-time
+
+---
+
+### Side Quest — Docker Basics
+
+#### Image vs Container
+
+* **Image**
+
+  * blueprint / template
+  * immutable
+  * like a *class*
+
+```bash
+docker pull postgres:latest
+docker run postgres
+```
+
+* **Container**
+
+  * running instance of an image
+  * holds state (DB data, logs, files)
+  * like an *object*
+
+```bash
+docker start <container_name>
+docker ps
+```
+
+---
+
+#### Useful Docker Commands
+
+Inspect a container:
+
+```bash
+docker inspect <container_name>
+```
+
+Enter a running container:
+
+```bash
+docker exec -it <container_name> bash
+```
+
+Inside Postgres:
+
+```bash
+psql -U postgres
+\l
+\c newsletter
+\dt
+\d subscriptions
+SELECT * FROM subscriptions;
+```
+
+---
+
+### Dockerfile (Preview)
+
+A **Dockerfile** is a recipe for building your own image.
+
+It allows you to:
+
+* define OS, dependencies, binaries
+* build reproducible environments
+* deploy consistently across machines
+
+---
+
+## Next Steps
+
+I’m re-reading **Chapter 3 and Chapter 4** to consolidate my understanding.
+
+Some concepts now make sense individually, but I want to:
+
+* properly structure the project
+* avoid redundancy
+* understand *why* each piece exists
+
+After that, I’ll revisit specific questions with more clarity.
+
+---
+
+📌 These notes will evolve as I progress further through the book.
+
+```
+
+---
