@@ -67,42 +67,42 @@ This prevents broken or low-quality code from reaching `main`, especially in tea
 #### Typical CI Steps
 
 1. **Run tests**
-   ```bash
-   cargo test
-````
+    ```bash
+    cargo test
+    ```
 
 2. **Code coverage**
 
-   ```bash
-   cargo tarpaulin --ignore-tests
-   ```
+    ```bash
+    cargo tarpaulin --ignore-tests
+    ```
 
-   Helps identify untested or neglected areas of the codebase.
+    Helps identify untested or neglected areas of the codebase.
 
 3. **Linting**
 
-   ```bash
-   cargo clippy -- -D warnings
-   ```
+    ```bash
+    cargo clippy -- -D warnings
+    ```
 
-   * catches unidiomatic or inefficient code
-   * warnings can be silenced selectively using:
-
-     ```rust
-     #[allow(clippy::lint_name)]
-     ```
+    * catches unidiomatic or inefficient code
+    * warnings can be silenced selectively using:
+    
+    ```rust
+    #[allow(clippy::lint_name)]
+    ```
 
 4. **Formatting**
 
-   ```bash
-   cargo fmt -- --check
-   ```
+    ```bash
+    cargo fmt -- --check
+    ```
 
 5. **Security audit**
 
-   ```bash
-   cargo audit
-   ```
+    ```bash
+    cargo audit
+    ```
 
 You can build your own pipeline or reuse existing ones.
 
@@ -118,13 +118,13 @@ The book clearly defines the **use case** through three core user stories.
 ### User Stories
 
 * **As a blog visitor**
-  I want to subscribe to the newsletter to receive updates when new content is published.
+    I want to subscribe to the newsletter to receive updates when new content is published.
 
 * **As a blog author**
-  I want to email all subscribers when new content is published.
+    I want to email all subscribers when new content is published.
 
 * **As a subscriber**
-  I want to unsubscribe to stop receiving emails.
+    I want to unsubscribe to stop receiving emails.
 
 ### Future Features (Not Implemented)
 
@@ -201,19 +201,19 @@ Rust supports multiple testing approaches:
 
 1. **Embedded tests**
 
-   ```rust
-   #[cfg(test)]
-   ```
+    ```rust
+    #[cfg(test)]
+    ```
 
-   * hidden behind conditional compilation
-   * good for testing internal components
-   * suitable for “iceberg projects” (large internals, small public API)
+    * hidden behind conditional compilation
+    * good for testing internal components
+    * suitable for “iceberg projects” (large internals, small public API)
 
 2. **Integration tests** *(used in this project)*
 
-   * placed in the `tests/` directory
-   * simulate real user behavior
-   * test the system as a whole
+    * placed in the `tests/` directory
+    * simulate real user behavior
+    * test the system as a whole
 
 3. **Documentation tests**
 
@@ -243,9 +243,9 @@ We use **integration tests** because they validate real HTTP behavior.
 
 * **Image**
 
-  * blueprint / template
-  * immutable
-  * like a *class*
+    * blueprint / template
+    * immutable
+    * like a *class*
 
 ```bash
 docker pull postgres:latest
@@ -254,9 +254,9 @@ docker run postgres
 
 * **Container**
 
-  * running instance of an image
-  * holds state (DB data, logs, files)
-  * like an *object*
+    * running instance of an image
+    * holds state (DB data, logs, files)
+    * like an *object*
 
 ```bash
 docker start <container_name>
