@@ -1,15 +1,17 @@
 # Notes by Aaditya Bhatnagar  
 ## *Zero to Production in Rust* — Luca Palmieri
 
-These notes document my learnings while working through **Zero to Production in Rust** by Luca Palmieri.
+These notes document my learnings while working through **Zero to Production in Rust** by Luca Palmieri. 
 
 They include:
 - key concepts explained in my own words  
 - practical commands, tools, and workflows  
 - additional context I researched to fill knowledge gaps  
 
+⚠️ Disclaimer: Everything mentioned here are things I would want to remember in the future so I'm noting them down in first-person and not in third person because its a pain writing "The book mentions..." repeatedly. I claim no credit to any of the content in these notes. All my learning in these notes have come through the book and internet. These notes are not meant as a substitute to the book and are no means infringing on the book's content or replacing the book. This is intended purely for my personal understanding and is no different from notes made in a notebook for an exam. However, you free to look at my interpretation and understanding of the book in the free common open-source content space. Better safe than sorry 🙂
+
 ⚠️ Some basic steps (Rust install, Git setup, etc.) are intentionally omitted.  
-If you feel stuck, **refer back to the book** — these notes are a companion, not a replacement.
+If you feel stuck, **refer back to the book** — these notes are a companion, not a replacement. 
 
 ---
 
@@ -107,7 +109,7 @@ This prevents broken or low-quality code from reaching `main`, especially in tea
 You can build your own pipeline or reuse existing ones.
 
 📌 **GitHub Actions reference pipeline:**
-[https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3](https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3)
+[link from the book](https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3)
 
 ---
 
@@ -180,6 +182,8 @@ HTTP Response
 This chapter focuses **only on the backend**:
 
 * `/subscriptions` `POST` endpoint
+* Postgres Database connections to store the user's name and email
+* CI pipeline, taking care of migrations
 
 ---
 
@@ -292,7 +296,7 @@ SELECT * FROM subscriptions;
 
 ---
 
-### Dockerfile (Preview)
+#### Dockerfile (Preview)
 
 A **Dockerfile** is a recipe for building your own image.
 
@@ -302,19 +306,10 @@ It allows you to:
 * build reproducible environments
 * deploy consistently across machines
 
----
+### First Endpoint: /health_check
 
-## Next Steps
+We use /health_check to check the status of our application, whether its running or not. This can be combined with [pingdom.com](https://www.pingdom.com/) to alert when the API goes out of commision. It can also be combined with a container orchestrator like Kubernetes or Nomad to detect if the API is unresponsive and trigger a restart.
 
-I’m re-reading **Chapter 3 and Chapter 4** to consolidate my understanding.
-
-Some concepts now make sense individually, but I want to:
-
-* properly structure the project
-* avoid redundancy
-* understand *why* each piece exists
-
-After that, I’ll revisit specific questions with more clarity.
 
 ---
 
